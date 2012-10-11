@@ -2,12 +2,14 @@ module DelayedPaperclip
   module Attachment
 
     def self.included(base)
-      base.send :include, InstanceMethods
-      base.send :attr_accessor, :job_is_processing
-      base.alias_method_chain :post_processing, :delay
-      base.alias_method_chain :post_processing=, :delay
-      base.alias_method_chain :save, :prepare_enqueueing
-      base.alias_method_chain :post_process_styles, :processing
+      unless base.ancestors.include?(InstanceMethods)
+        base.send :include, InstanceMethods
+        base.send :attr_accessor, :job_is_processing
+        base.alias_method_chain :post_processing, :delay
+        base.alias_method_chain :post_processing=, :delay
+        base.alias_method_chain :save, :prepare_enqueueing
+        base.alias_method_chain :post_process_styles, :processing
+      end
     end
 
     module InstanceMethods
