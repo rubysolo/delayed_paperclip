@@ -35,9 +35,10 @@ module DelayedPaperclip
       def processing?
         @instance.send(:"#{@name}_processing?")
       end
-
+      
       def process_delayed!
         self.job_is_processing = true
+        self.post_processing = true
         reprocess!
         self.job_is_processing = false
       end
